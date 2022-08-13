@@ -1,0 +1,185 @@
+
+apostila interessante:
+https://debxp.org/cbpb/
+
+CAMINHO DOS SHELLS DISPONIVEIS: /etc/shells
+
+-------------->[INTRODUÇÃO AO BASH]<---------------------------------------------
+
+Conceito: Variaveis do shell(bash) 
+Criador do BASH: Brian Fox lançado em 1989 como FreedomSoftware
+
+
+-------------->[COMANDOS "BUILTIN" do BASH]<-------------------------------------
+Conceito de "Builtin": Faz parte do sistema BASH
+
+para ver todos comandos builtin: help 
+
+
+-------------->[TIPOS DE VARIAVEIS]<------------------------------------------------------
+
+- VARIAVEIS DE AMBIENTE:
+São as variaveis que podem ser acessadas por todos os shell's
+(exemplo: PATH; HOME...)
+PARA DECLARAR UMA: export nome-da-variavel (porém ao reiniciar o pc, as conf reseta!)
+
+
+- VARIAVEIS GLOBAIS:
+São as variaveis declaradas no shell corrente, podendo ser "vista"
+por todos comandos execultados neste shell (corrente)
+
+
+- VARIAVEIS LOCAIS:
+São as variaveis declaradas com o comando: local
+utilizada para ser "vista" apenas na quele bloco x de comando!
+PARA DECLARAR UMA: local nome-da-variavel
+
+
+- VARIAVEIS READ-ONLY (SOMENTE-LEITURA)
+São variaveis read-only e além disso NÃO PODEM SER EXCLUIDAS,
+apenas encerrando a sessão!
+PARA DECLARAR UMA: readonly nome-da-variavel ou declare -r nome-da-variavel
+
+
+-------------->[VARIAVEIS ESPECIAIS]<----------------------------------------
+
+- $? -> Armazena o status de saída de um comando no shell, 
+--- 0 == Tudo OK
+--- Maior que 0 == Error
+
+- $$ -> Armazena o PID do shell corrente
+
+- $PPID -> Armazena o PID do processo "PAI" do shell corrente 
+
+- $0 -> Armazena o nome do programa execultado
+
+- $1 -> Armazena o primeiro argumento passado ($2 o segundo e assim por diant)
+
+- $# -> Armazena a quantidade de argumentos passados para o script
+
+-------------->[ESTRUTURA CONDICIONAL EM BASH]<------------------------------
+
+test == comando usado para comparações aritméticas (não existe booleano em shell)
+---Ou [[expressão]] 
+------> Testes relacionais <---------------------------------
+-eq == Igual          (==) (trad: equal)
+-ne == Diferente      (!=) (trad: Not equal)
+-lt == Menor que       (<) (trad: less than)
+-le == Menor ou igual (<=) (trad: less or equal)
+-gt == Maior que       (>) (trad: greater than)
+-ge == Maior ou igual (>=) (trad: greater or equal)
+
+! == not (negação) sintax: [[ ! $num -eq 5 ]] <- se for verdadeiro, vira falso
+|| == or 
+&& == and
+
+=~ == indica ao teste que é uma REGEX (^[0-9]+$)
+
+-f == verifica a existencia de um arquivo/diretório do sistema 
+
+
+exemplo:
+test 5 -eq 5 
+echo $?
+
+saída:
+0 (ou seja Verdadeiro)
+
+exemplo2:
+test 5 -eq 0
+echo $?
+
+saída:
+1 (Diferente de 0 == Falso)
+
+
+- && == Se for 0 o status de saída do operando lado esquerdo <, execulte o lado direito >
+
+exemplo:
+sudo apt update && sudo apt upgrade (só vai fazer upgrade, se rodar ok o update
+
+exemplo2:
+test 5 -eq 5 && echo "Sucesso"
+
+saída:
+Sucesso
+
+- || == se for diferente de 0 o status de saída do lado esquerdo <, execulte o lado direito >;
+exemplo:
+test 2 -eq 5 && echo "Sucesso" || echo "Fail"
+
+saída:
+Fail
+
+- > == redireciona a saída padrão do operando esquerdo para um arquivo (direito) 
+---se utilizar &> redireciona TODA sáida (inclusive error) para o aquivo (direito)
+
+
+-------------->[Sintax dos cod]<--------------------------------------------------
+OBS: Para declarar uma variavel utilizar:
+declare (-i == int; -A == Arrays associativas; -p == Exibe atributos da var)
+
+OBS: VARIAVEIS "SIMPLES" que apontam a um unico valo == escalar
+
+OBS: ARRAYS ASSOCIATIVAS == Arrays com strings no índice
+-----ARRAYS INDEXADAS == Arrays com inteiros no índice
+
+- Criando variaveis simples: nome-variavel=valor
+
+- Ciando variaveis arrays: nome-variavel=(valor valor valor)
+
+- DELETANDO VALORES de arrays: 
+unset nome-variavel[índice] ('*' deleta tudo)
+
+- QUANTIDADE de elementos em um array: ${#nome-da-array[@|*]
+
+- LISTAR todos os VALORES de uma array: ${nome-da-array[@|*]
+
+- LISTAR todos os INDICES de uma array: ${!nome-da-array[@|*]
+
+- PARA LISTAR de pontos desejados da array: ${nome-da-array[@]:ind-inicio:ind-fim}
+
+- DELETANDO variáveis simples: 
+unset nome-variavel
+
+- EXPORTANDO variaveis para outros terminais: 
+export nome-variavel
+
+- PRINTANDO variaveis existentes no sistema: 
+env ou printenv
+
+- RETORNANDO o valor no prompt: 
+echo $nome-variavel
+
+- RETORNANDO o valor de uma posição x: 
+echo $nome-array[índice] ('*' para all)
+
+- CRIANDO scripts: 
+qualquer arquivo .txt colocar na linha 1: #!/bin/bash
+
+- ATRIBUINDO valor em uma variavel por "Interação" (estilo input):
+read -p(para mostrar uma mensagem) "Digite um valor: " nome-variavel
+
+- ATRIBUINDO valor em uma variavel por RETORNO DE COMANDO:
+nome-da-variavel=$(comando) ou nome-da-variavel=`comando`
+
+exemplo:
+
+#!/bin/bash
+read -p "Diga Olá Mundo: " variavel_ola
+echo "Et bilu: $valiavel_ola"
+
+saída:
+
+Et bilu: Olá Mundo!
+
+
+- CARREGANDO outros arquivos/scripts dentro do script:
+Utilizar . ou source caminho-do-arquivo
+
+
+exemplo:
+
+if [[ -f ~/bin/script-top ]]; # -f procura o arquivo, e se encontar
+    . ~/bin/script-top        # execulta ele nesta linha 
+

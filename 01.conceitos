@@ -1,0 +1,10 @@
+
+
+Ao logar no sys linux o bash acessa o arquivo de inicialização presente
+no CAMINHO: /etc/profile, e também os arquivos de inicialização locais
+do usuário logado atualmente: ~/.bash_login, ~/.profile e ~/.bash_profile
+
+Obs: O primeiro deles que for encontrado sera execultado! 
+
+Nos arquivos locais é possível editar e criar aliases e variaveis ambiente
+e também scripts de inicialização
