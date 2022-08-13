@@ -1,5 +1,3 @@
-
-
 Ao logar no sys linux o bash acessa o arquivo de inicialização presente
 no CAMINHO: /etc/profile, e também os arquivos de inicialização locais
 do usuário logado atualmente: ~/.bash_login, ~/.profile e ~/.bash_profile
